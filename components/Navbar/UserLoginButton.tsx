@@ -3,13 +3,30 @@ import { UserRound, LogOut } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { app } from "@/lib/firebase";
+import { getAuth } from "firebase/auth";
+import { useRouter } from "next/navigation";
 
-const UserLoginButton = () => {
+const auth = getAuth(app);
+
+interface Admin {
+  name?: string;
+  email?: string;
+}
+
+const UserLoginButton = ({ name, email }: Admin) => {
+  const router = useRouter();
+
+  const handleLogout = () => {
+    try {
+      auth.signOut();
+      router.push("/login");
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -19,9 +36,9 @@ const UserLoginButton = () => {
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
         <div className="flex flex-col gap-2 px-5 py-2">
-          <span className="font-bold">ePunchADMIN</span>
-          <span>123@gmail.com</span>
-          <Button>
+          <span className="font-bold">{name}</span>
+          <span>{email}</span>
+          <Button onClick={handleLogout}>
             <LogOut className="w-5 h-5" />
             登出
           </Button>

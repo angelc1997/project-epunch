@@ -20,9 +20,6 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { useRouter } from "next/navigation";
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
-import { app } from "@/lib/firebase";
 import {
   getFirestore,
   doc,
@@ -33,7 +30,11 @@ import {
   query,
 } from "firebase/firestore";
 import { useToast } from "@/components/ui/use-toast";
+import { app } from "@/lib/firebase";
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import { useRouter } from "next/navigation";
 import { FirebaseError } from "firebase/app";
+import { getErrorToast } from "@/lib/firebaseErrorHandler";
 
 const auth = getAuth(app);
 const db = getFirestore(app);
@@ -135,26 +136,13 @@ const LoginForm = () => {
           }
         }
       }
-    } catch (error: FirebaseError | any) {
-      switch (error.code) {
-        case "auth/user-not-found":
-          toast({
-            title: "用戶不存在",
-            description: "請確認您輸入的電子郵件地址是否正確",
-          });
-          break;
-        case "auth/wrong-password":
-          toast({
-            title: "密碼錯誤",
-            description: "請確認您輸入的密碼是否正確",
-          });
-          break;
-        default:
-          toast({
-            title: "登入錯誤",
-            description: `${error.message}`,
-          });
-      }
+    } catch (error) {
+      const errorToast = getErrorToast(error);
+      toast({
+        title: errorToast.title,
+        description: errorToast.description,
+        variant: "destructive",
+      });
     }
   };
 
@@ -162,9 +150,7 @@ const LoginForm = () => {
     <Card>
       <CardHeader>
         <CardTitle>登入系統</CardTitle>
-        <CardDescription>
-          請先註冊管理員，並添加您的個人資料以登入系統
-        </CardDescription>
+        <CardDescription>請先註冊管理員，並添加資料以登入系統</CardDescription>
       </CardHeader>
       <CardContent>
         <Form {...form}>
@@ -177,12 +163,12 @@ const LoginForm = () => {
               name="email"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="flex justify-between items-center text-xs font-bold text-zinc-500">
-                    信箱 <FormMessage className="text-xs" />
+                  <FormLabel className="flex justify-between items-center text-base font-bold text-zinc-500">
+                    信箱 <FormMessage className="text-base" />
                   </FormLabel>
                   <FormControl>
                     <Input
-                      className="bg-slate-100 border-0"
+                      className="bg-slate-100 border-0 text-base"
                       placeholder="請輸入信箱"
                       {...field}
                       type="email"
@@ -198,13 +184,13 @@ const LoginForm = () => {
               name="password"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="flex justify-between items-center text-xs font-bold text-zinc-500">
-                    密碼 <FormMessage className="text-xs" />
+                  <FormLabel className="flex justify-between items-center text-base font-bold text-zinc-500">
+                    密碼 <FormMessage className="text-base" />
                   </FormLabel>
                   <FormControl>
                     <Input
                       type="password"
-                      className="bg-slate-100 border-0"
+                      className="bg-slate-100 border-0 text-base"
                       placeholder="請輸入密碼"
                       autoComplete="current-password"
                       {...field}
@@ -214,7 +200,7 @@ const LoginForm = () => {
               )}
             />
 
-            <Button className="w-full">登入</Button>
+            <Button className="w-full text-base">登入</Button>
           </form>
         </Form>
       </CardContent>

@@ -134,12 +134,12 @@ const RegisterForm = () => {
               name="companyName"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className=" flex justify-between items-center text-xs font-bold text-zinc-500">
-                    公司名稱 <FormMessage className="text-xs" />
+                  <FormLabel className=" flex justify-between items-center text-base font-bold text-zinc-500">
+                    公司名稱 <FormMessage className="text-base" />
                   </FormLabel>
                   <FormControl>
                     <Input
-                      className="bg-slate-100 border-0 "
+                      className="bg-slate-100 border-0 text-base"
                       placeholder="請輸入公司名稱"
                       {...field}
                     />
@@ -153,12 +153,12 @@ const RegisterForm = () => {
               name="adminEmail"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className=" flex justify-between items-center text-xs font-bold text-zinc-500">
-                    管理員帳號 <FormMessage className="text-xs" />
+                  <FormLabel className=" flex justify-between items-center text-base font-bold text-zinc-500">
+                    管理員帳號 <FormMessage className="text-base" />
                   </FormLabel>
                   <FormControl>
                     <Input
-                      className="bg-slate-100 border-0 "
+                      className="bg-slate-100 border-0 text-base"
                       placeholder="請輸入管理員信箱"
                       autoComplete="username"
                       {...field}
@@ -173,13 +173,13 @@ const RegisterForm = () => {
               name="password"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className=" flex justify-between items-center text-xs font-bold text-zinc-500">
-                    密碼 <FormMessage className="text-xs" />
+                  <FormLabel className=" flex justify-between items-center text-base font-bold text-zinc-500">
+                    密碼 <FormMessage className="text-base" />
                   </FormLabel>
                   <FormControl>
                     <Input
                       type="password"
-                      className="bg-slate-100 border-0 "
+                      className="bg-slate-100 border-0 text-base"
                       placeholder="請輸入密碼"
                       autoComplete="current-password"
                       {...field}
@@ -194,13 +194,13 @@ const RegisterForm = () => {
               name="confirmPassword"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className=" flex justify-between items-center text-xs font-bold text-zinc-500">
-                    再次輸入密碼 <FormMessage className="text-xs" />
+                  <FormLabel className=" flex justify-between items-center text-base font-bold text-zinc-500">
+                    再次輸入密碼 <FormMessage className="text-base" />
                   </FormLabel>
                   <FormControl>
                     <Input
                       type="password"
-                      className="bg-slate-100 border-0 "
+                      className="bg-slate-100 border-0 text-base"
                       placeholder="請再次輸入密碼"
                       autoComplete="current-password"
                       {...field}
@@ -210,7 +210,7 @@ const RegisterForm = () => {
               )}
             />
 
-            <Button className="w-full" type="submit">
+            <Button className="w-full text-base" type="submit">
               註冊
             </Button>
           </form>

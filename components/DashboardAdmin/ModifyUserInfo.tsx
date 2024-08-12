@@ -1,3 +1,5 @@
+"use client";
+import React, { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -14,15 +16,113 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-  SelectGroup,
 } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { SquarePen } from "lucide-react";
+import { app } from "@/lib/firebase";
+import { doc, getDoc, getFirestore, updateDoc } from "firebase/firestore";
+import { useToast } from "../ui/use-toast";
+import { getErrorToast } from "@/lib/firebaseErrorHandler";
 
-const ModifyUserInfo = () => {
+const db = getFirestore(app);
+
+const statusOptions = [
+  { value: "active", label: "在職" },
+  { value: "inactive", label: "離職" },
+  { value: "suspended", label: "留職中" },
+];
+
+const roleOptions = [
+  { value: "manager", label: "主管" },
+  { value: "staff", label: "員工" },
+];
+
+interface ModifyUserInfoProps {
+  adminId: string;
+  userId: string;
+}
+
+const ModifyUserInfo: React.FC<ModifyUserInfoProps> = ({ adminId, userId }) => {
+  const { toast } = useToast();
+  const [isOpen, setIsOpen] = useState(false);
+  const [userData, setUserData] = useState({
+    employeeId: "",
+    name: "",
+    department: "",
+    position: "",
+    email: "",
+    tele: "",
+    status: "",
+    role: "",
+  });
+
+  useEffect(() => {
+    const getUserData = async () => {
+      if (!isOpen) return;
+
+      try {
+        const userDoc = await getDoc(
+          doc(db, "admins", adminId, "allUsers", userId)
+        );
+        if (userDoc.exists()) {
+          setUserData(userDoc.data() as typeof userData);
+        }
+      } catch (error) {
+        const errorToast = getErrorToast(error);
+        toast({
+          title: errorToast.title,
+          description: errorToast.description,
+          variant: "destructive",
+        });
+      }
+    };
+
+    getUserData();
+  }, [adminId, userId, toast, isOpen]);
+
+  const handleChange = (field: string, value: string) => {
+    setUserData((prev) => ({ ...prev, [field]: value }));
+  };
+
+  const handleSubmit = async () => {
+    try {
+      const updateUserData = {
+        ...userData,
+        updatedAt: new Date().toISOString(),
+      };
+
+      await updateDoc(
+        doc(db, "admins", adminId, "allUsers", userId),
+        updateUserData
+      );
+      await updateDoc(doc(db, "users", userId), updateUserData);
+
+      if (userData.role === "manager") {
+        await updateDoc(
+          doc(db, "admins", adminId, "managers", userId),
+          updateUserData
+        );
+      }
+
+      toast({
+        title: "員工資料更新成功",
+        description: "已更新員工資料",
+      });
+
+      setIsOpen(false);
+    } catch (error) {
+      const errorToast = getErrorToast(error);
+      toast({
+        title: errorToast.title,
+        description: errorToast.description,
+        variant: "destructive",
+      });
+    }
+  };
+
   return (
-    <Dialog>
+    <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
         <Button variant="outline">
           <SquarePen className="w-5 h-5" />
@@ -37,11 +137,21 @@ const ModifyUserInfo = () => {
         <div className="flex gap-2">
           <div>
             <Label>員編</Label>
-            <Input name="employeeId" className="mt-2" placeholder="ex:A001" />
+            <Input
+              name="employeeId"
+              className="mt-2"
+              value={userData.employeeId}
+              onChange={(e) => handleChange("employeeId", e.target.value)}
+            />
           </div>
           <div>
             <Label>姓名</Label>
-            <Input name="name" className="mt-2" placeholder="ex:王小明" />
+            <Input
+              name="name"
+              className="mt-2"
+              value={userData.name}
+              onChange={(e) => handleChange("name", e.target.value)}
+            />
           </div>
         </div>
 
@@ -51,12 +161,18 @@ const ModifyUserInfo = () => {
             <Input
               name="department"
               className="mt-2"
-              placeholder="ex:人力資源處"
+              value={userData.department}
+              onChange={(e) => handleChange("department", e.target.value)}
             />
           </div>
           <div>
             <Label>職位</Label>
-            <Input name="position" className="mt-2" placeholder="ex:工程師" />
+            <Input
+              name="position"
+              className="mt-2"
+              value={userData.position}
+              onChange={(e) => handleChange("position", e.target.value)}
+            />
           </div>
         </div>
 
@@ -65,53 +181,69 @@ const ModifyUserInfo = () => {
           <Input
             name="email"
             className="mt-2"
-            placeholder="ex: employee@example.com"
-          />
-        </div>
-
-        <div>
-          <Label>密碼</Label>
-          <Input
-            name="password"
-            className="mt-2"
-            autoComplete="new-password"
-            placeholder="如:123456"
+            value={userData.email}
+            onChange={(e) => handleChange("email", e.target.value)}
           />
         </div>
 
         <div>
           <Label>分機</Label>
-          <Input className="mt-2" placeholder="分機" name="tele" />
+          <Input
+            className="mt-2"
+            name="tele"
+            value={userData.tele}
+            onChange={(e) => handleChange("tele", e.target.value)}
+          />
         </div>
 
         <div className="flex gap-2">
           <div className="w-full">
             <Label>狀態</Label>
             <div className="mt-2">
-              <Select>
+              <Select
+                value={userData.status}
+                onValueChange={(value) => handleChange("status", value)}
+              >
                 <SelectTrigger className="w-full">
                   <SelectValue placeholder="狀態" />
                 </SelectTrigger>
-                <SelectContent></SelectContent>
+                <SelectContent>
+                  {statusOptions.map((option) => (
+                    <SelectItem key={option.value} value={option.value}>
+                      {option.label}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
               </Select>
             </div>
           </div>
           <div className="w-full">
             <Label>權限</Label>
             <div className="mt-2">
-              <Select>
+              <Select
+                value={userData.role}
+                onValueChange={(value) => handleChange("role", value)}
+              >
                 <SelectTrigger className="w-full">
                   <SelectValue placeholder="權限" />
                 </SelectTrigger>
-                <SelectContent></SelectContent>
+                <SelectContent>
+                  {roleOptions.map((option) => (
+                    <SelectItem key={option.value} value={option.value}>
+                      {option.label}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
               </Select>
             </div>
           </div>
         </div>
 
         <DialogFooter className="mt-2">
-          <Button variant="outline">取消</Button>
-          <Button>確認新增</Button>
+          <Button variant="outline" onClick={() => setIsOpen(false)}>
+            取消
+          </Button>
+          <Button onClick={handleSubmit}>確定修改</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>

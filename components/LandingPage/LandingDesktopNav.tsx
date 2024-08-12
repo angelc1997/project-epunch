@@ -29,7 +29,9 @@ const LandingDesktopNav = () => {
           <SquareMousePointer className="h-6 w-6" />
           <span>ePunch點點班</span>
         </Link>
-        <Button className="rounded-full px-6 py-2 text-lg">註冊/登入</Button>
+        <Link href="/login">
+          <Button className="rounded-full px-6 py-2 text-lg">註冊/登入</Button>
+        </Link>
       </nav>
     </header>
   );
