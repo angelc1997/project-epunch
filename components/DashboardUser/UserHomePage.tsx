@@ -21,14 +21,28 @@ import { Separator } from "@/components/ui/separator";
 import { useEffect, useState } from "react";
 
 // 假設的公司位置
-const companyLocation = { lat: 25.033, lng: 121.5654 };
+const companyLocation = { lat: 24.973325, lng: 121.4026991 };
 // 允許距離
 const allowedDistance = 100;
+const workingEarlyStart = 8;
+const workingLatestStart = 10;
+const minWorkingTime = 9;
+const maxWorkingTime = 10;
 
 const UserHomePage = () => {
   const [currentDate, setCurrentDate] = useState("");
   const [currentTime, setCurrentTime] = useState("");
   const [locationStatus, setLocationStatus] = useState("正在檢查位置...");
+  const [isLocationAllowed, setIsLocationAllowed] = useState<boolean>(false);
+  const [clockInTime, setClockInTime] = useState("");
+  const [clockOutTime, setClockOutTime] = useState("");
+  const [expectOutTime, setExpectOutTime] = useState("");
+  const [isLate, setIsLate] = useState(false);
+  const [isEarly, setIsEarly] = useState(false);
+  const [isOverTime, setIsOverTime] = useState(false);
+  const [isLeaveDay, setIsLeaveDay] = useState(false);
+  const [hasClockedIn, setHasClockedIn] = useState(false);
+  const [hasClockedOut, setHasClockedOut] = useState(false);
 
   useEffect(() => {
     const updateDateTime = () => {
@@ -70,19 +84,24 @@ const UserHomePage = () => {
               companyLocation.lat,
               companyLocation.lng
             );
+            console.log("距離：", userLat, userLng, distance);
 
             if (distance <= allowedDistance) {
               setLocationStatus("允許範圍");
+              setIsLocationAllowed(true);
             } else {
               setLocationStatus("不在允許範圍內");
+              setIsLocationAllowed(false);
             }
           },
           (error) => {
             setLocationStatus("位置未開啟");
+            setIsLocationAllowed(false);
           }
         );
       } else {
         setLocationStatus("瀏覽器不支持地理位置");
+        setIsLocationAllowed(false);
       }
     };
 
@@ -108,6 +127,16 @@ const UserHomePage = () => {
     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 
     return R * c; // 返回距離（米）
+  };
+
+  const handleClockIn = () => {
+    // 這裡添加打卡邏輯
+    console.log("打卡成功！時間：", currentTime);
+  };
+
+  const handleClockOut = () => {
+    // 這裡添加下班打卡邏輯
+    console.log("下班打卡成功！時間：", currentTime);
   };
 
   return (
@@ -195,7 +224,13 @@ const UserHomePage = () => {
               <CardDescription>表定上班時間</CardDescription>
             </CardHeader>
             <CardContent>
-              <Button size="lg">上班打卡</Button>
+              <Button
+                size="lg"
+                onClick={handleClockIn}
+                disabled={!isLocationAllowed}
+              >
+                上班打卡
+              </Button>
             </CardContent>
           </div>
 
@@ -207,7 +242,13 @@ const UserHomePage = () => {
               <CardDescription>表定下班時間</CardDescription>
             </CardHeader>
             <CardContent>
-              <Button size="lg">下班打卡</Button>
+              <Button
+                size="lg"
+                onClick={handleClockOut}
+                disabled={!isLocationAllowed}
+              >
+                下班打卡
+              </Button>
             </CardContent>
           </div>
         </Card>
