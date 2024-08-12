@@ -3,7 +3,10 @@ import { Button } from "@/components/ui/button";
 import { Menu, House, SquareMousePointer, NotepadText } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 
-const UserMobileNav = () => {
+type UserInfo = {
+  userId: string;
+};
+const UserMobileNav = ({ userId }: UserInfo) => {
   return (
     <Sheet>
       <SheetTrigger asChild>
@@ -14,14 +17,14 @@ const UserMobileNav = () => {
       <SheetContent side="left">
         <nav className="flex flex-col gap-4">
           <Link
-            href="#"
+            href="/"
             className="flex items-center justify-center py-4 px-4 gap-2 text-lg font-bold"
           >
             <SquareMousePointer className="h-6 w-6" />
             <span>ePunch點點班</span>
           </Link>
           <Link
-            href="/dailyrecord"
+            href={`/user/${userId}/dailyrecord`}
             className="flex items-center py-4 px-4 gap-1 rounded hover:bg-primary hover:text-white"
           >
             <House className="w-5 h-5" />
@@ -29,7 +32,7 @@ const UserMobileNav = () => {
           </Link>
 
           <Link
-            href="/recordlist"
+            href={`/user/${userId}/recordlist`}
             className="flex items-center py-4 px-4 gap-1 rounded hover:bg-primary hover:text-white"
           >
             <NotepadText className="w-5 h-5" />

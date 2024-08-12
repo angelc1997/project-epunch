@@ -102,7 +102,7 @@ const LoginForm = () => {
           // 瀏覽每一個doc
           for (const admin of adminsSnapshot.docs) {
             const userQuery = query(
-              collection(db, "admins", admin.id, "users"),
+              collection(db, "admins", admin.id, "allUsers"),
               where("email", "==", data.email)
             );
             const userSnapshot = await getDocs(userQuery);

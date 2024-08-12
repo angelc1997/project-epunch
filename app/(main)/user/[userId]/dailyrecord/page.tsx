@@ -44,9 +44,9 @@ const DashboardDailyRecord = () => {
     <div className="max-w-[1200px] min-h-screen mx-auto">
       <header className="bg-white flex justify-between items-center h-20 px-5">
         {/* 導航列電腦版 */}
-        <UserDesktopNav />
+        <UserDesktopNav userId={user.userId} />
         {/* 導航列手機版 */}
-        <UserMobileNav />
+        <UserMobileNav userId={user.userId} />
         {/* 會員資料+登出按鈕 */}
         <UserLoginButton name={user.userName} email={user.email} />
       </header>
