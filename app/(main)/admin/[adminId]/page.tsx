@@ -23,6 +23,7 @@ export default function Dashboard() {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (!user || !user.displayName || !user.email) {
+        setAdmin(null);
         router.push("/login");
       } else {
         const adminId = user.uid;
@@ -33,7 +34,11 @@ export default function Dashboard() {
     });
 
     return () => unsubscribe();
-  }, []);
+  }, [router]);
+
+  if (!admin) {
+    return <div>請先登入</div>;
+  }
 
   return (
     <div className="max-w-[1200px] min-h-screen mx-auto">
@@ -43,7 +48,7 @@ export default function Dashboard() {
         {/* 導航列手機版 */}
         <AdminMobileNav />
         {/* 會員資料+登出按鈕 */}
-        <UserLoginButton name={admin?.companyName} email={admin?.email} />
+        <UserLoginButton name={admin.companyName} email={admin.email} />
       </header>
 
       {/* 主要內容區塊 */}

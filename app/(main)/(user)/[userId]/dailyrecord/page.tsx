@@ -20,7 +20,6 @@ interface User {
 const DashboardDailyRecord = () => {
   const router = useRouter();
   const [user, setUser] = useState<User | null>(null);
-  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -34,14 +33,9 @@ const DashboardDailyRecord = () => {
         console.log("user", userId, userName, email);
         setUser({ userId, userName, email });
       }
-      setLoading(false);
     });
     return () => unsubscribe();
   }, [router]);
-
-  if (loading) {
-    return <div>正在載入中</div>;
-  }
 
   if (!user) {
     return <div>請先登入</div>;
