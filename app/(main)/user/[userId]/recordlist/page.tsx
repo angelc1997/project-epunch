@@ -37,7 +37,11 @@ const DashboardRecordList = () => {
   }, [router]);
 
   if (!user) {
-    return <div>請先登入</div>;
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <div className="loader"></div>
+      </div>
+    );
   }
   return (
     <div className="max-w-[1200px] min-h-screen mx-auto">
