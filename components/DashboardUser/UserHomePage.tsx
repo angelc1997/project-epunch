@@ -190,6 +190,7 @@ const UserHomePage = () => {
       setClockInTime(clockInTime);
       setExpectOutTime(expectOutTime);
       setHasClockedIn(true);
+      setIsLate(isLate);
     } catch (error) {
       console.error("上班打卡失敗:", error);
     }
