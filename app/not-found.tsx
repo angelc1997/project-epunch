@@ -1,16 +1,17 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import LandingNav from "@/components/LandingPage/LandingNav";
+import NotFoundPage from "@/components/Others/NotFounPage";
+import LandingFooter from "@/components/LandingPage/LandingFooter";
 
-export default function NotFound() {
+const NotFound = () => {
   return (
-    <>
-      <div>
-        <h1>404 - 頁面未找到</h1>
-        <p>你要找的頁面不存在</p>
-      </div>
-      <Link href="/">
-        <Button>返回首頁</Button>
-      </Link>
-    </>
+    <div className="max-w-[1200px] min-h-screen mx-auto ">
+      <LandingNav />
+      <NotFoundPage />
+      <LandingFooter />
+    </div>
   );
-}
+};
+
+export default NotFound;

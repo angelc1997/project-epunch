@@ -13,7 +13,7 @@ import {
 
 const LandingFooter = () => {
   return (
-    <header className="h-20 px-5 border-slate-200 border-2 mt-5 rounded-full">
+    <header className="h-20 px-5 border-slate-200 border-2 mt-10 rounded-full">
       <nav className="flex justify-center items-center h-full px-4">
         {/* 首頁 */}
         <Link
