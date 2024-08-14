@@ -1,11 +1,14 @@
 import Link from "next/link";
 import { House, SquareMousePointer } from "lucide-react";
 
-const AdminDesktopNav = () => {
+type AdminInfo = {
+  adminId: string;
+};
+const AdminDesktopNav = ({ adminId }: AdminInfo) => {
   return (
     <nav className="hidden flex-col gap-6 text-lg font-bold md:flex md:flex-row md:items-center">
       <Link
-        href="/admin"
+        href="/"
         className="flex items-center gap-2 justify-center hover:text-primary"
       >
         <SquareMousePointer className="h-6 w-6" />
@@ -13,7 +16,7 @@ const AdminDesktopNav = () => {
       </Link>
 
       <Link
-        href="#"
+        href={`/admin/${adminId}`}
         className="flex items-center gap-2 justify-center hover:text-primary"
       >
         <House className="w-5 h-5" />

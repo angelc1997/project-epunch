@@ -3,7 +3,10 @@ import { Button } from "@/components/ui/button";
 import { Menu, House, SquareMousePointer } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 
-const AdminMobileNav = () => {
+type AdminInfo = {
+  adminId: string;
+};
+const AdminMobileNav = ({ adminId }: AdminInfo) => {
   return (
     <Sheet>
       <SheetTrigger asChild>
@@ -14,15 +17,15 @@ const AdminMobileNav = () => {
       <SheetContent side="left">
         <nav className="flex flex-col gap-4">
           <Link
-            href="#"
+            href="/"
             className="flex items-center justify-center py-4 px-4 gap-2 text-lg font-bold"
           >
             <SquareMousePointer className="h-6 w-6" />
             <span>ePunch點點班</span>
           </Link>
           <Link
-            href="#"
-            className="flex items-center py-4 px-4 gap-1 rounded hover:bg-primary hover:text-white"
+            href={`/admin/${adminId}`}
+            className="flex items-center gap-2 justify-center hover:text-primary"
           >
             <House className="w-5 h-5" />
             <span>員工列表</span>

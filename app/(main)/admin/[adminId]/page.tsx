@@ -37,16 +37,20 @@ export default function Dashboard() {
   }, [router]);
 
   if (!admin) {
-    return <div>請先登入</div>;
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <div className="loader"></div>
+      </div>
+    );
   }
 
   return (
     <div className="max-w-[1200px] min-h-screen mx-auto">
       <header className="bg-white flex justify-between items-center h-20 px-5">
         {/* 導航列電腦版 */}
-        <AdminDesktopNav />
+        <AdminDesktopNav adminId={admin.adminId} />
         {/* 導航列手機版 */}
-        <AdminMobileNav />
+        <AdminMobileNav adminId={admin.adminId} />
         {/* 會員資料+登出按鈕 */}
         <UserLoginButton name={admin.companyName} email={admin.email} />
       </header>

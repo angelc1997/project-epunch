@@ -95,6 +95,7 @@ const AddNewUserButton = ({ adminId }: Admin) => {
 
       const userData = {
         userId: user.uid,
+        adminId: adminId,
         ...newUser,
         createdAt: new Date().toISOString(),
         sys: "user",

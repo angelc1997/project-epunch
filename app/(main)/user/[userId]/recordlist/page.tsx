@@ -51,12 +51,12 @@ const DashboardRecordList = () => {
         {/* 導航列手機版 */}
         <UserMobileNav userId={user.userId} />
         {/* 會員資料+登出按鈕 */}
-        <UserLoginButton />
+        <UserLoginButton name={user.userName} email={user.email} />
       </header>
 
       {/* 主要內容區塊 */}
       <main className="mt-10 relative">
-        <UserRecordList />
+        <UserRecordList userId={user.userId} />
       </main>
     </div>
   );

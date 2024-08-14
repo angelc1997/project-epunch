@@ -1,9 +1,9 @@
 "use client";
 
-import * as React from "react";
+import React, { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import { ArrowUpRight, Plus } from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 
 import {
@@ -24,9 +24,69 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Calendar } from "@/components/ui/calendar";
+import { app } from "@/lib/firebase";
 
-const UserRecordsList = () => {
-  const [date, setDate] = React.useState<Date | undefined>(new Date());
+import {
+  collection,
+  getFirestore,
+  onSnapshot,
+  orderBy,
+  query,
+} from "firebase/firestore";
+import AddNewFormButton from "./AddNewFormButton";
+
+const db = getFirestore(app);
+
+type UserInfo = {
+  userId: string;
+};
+
+interface Record {
+  id: string;
+  clockInTime: string;
+  clockOutTime: string;
+  isEarly?: boolean;
+  isLate?: boolean;
+  isOver?: boolean;
+}
+
+const UserRecordsList = ({ userId }: UserInfo) => {
+  const [date, setDate] = useState<Date | undefined>(new Date());
+  const [recordData, setRecordData] = useState<Record[]>([]);
+
+  useEffect(() => {
+    const recordsRef = collection(db, `users/${userId}/records`);
+    const q = query(recordsRef);
+
+    const unsubscribe = onSnapshot(q, (querySnapshot) => {
+      const recordsData: Record[] = querySnapshot.docs.map((doc) => {
+        const data = doc.data();
+        return {
+          id: doc.id,
+          clockInTime: data.clockInTime,
+          clockOutTime: data.clockOutTime,
+          isEarly: data.isEarly,
+          isLate: data.isLate,
+          isOver: data.isOver,
+        };
+      });
+      const sortedRecordsData = recordsData.sort((a, b) =>
+        b.id.localeCompare(a.id)
+      );
+      setRecordData(sortedRecordsData);
+      console.log("recordsData", recordsData);
+    });
+
+    return () => unsubscribe();
+  }, [userId]);
+
+  const getStatus = (record: Record): string[] => {
+    const statuses: string[] = [];
+    if (record.isLate) statuses.push("遲到");
+    if (record.isEarly) statuses.push("早退");
+    if (record.isOver) statuses.push("加班");
+    return statuses;
+  };
 
   return (
     <main className="flex flex-1 flex-col gap-4 p-4 md:gap-8 md:p-8">
@@ -44,19 +104,16 @@ const UserRecordsList = () => {
         </Card>
 
         <Card className="lg:col-span-2">
-          <CardHeader className="flex flex-row items-center">
-            <div className="grid gap-2">
+          <CardHeader className="block text-center md:flex md:flex-row md:items-center md:justify-between md:text-left">
+            <div className="gap-2">
               <CardTitle>每日打卡紀錄</CardTitle>
-              <CardDescription>
+              <CardDescription className="mt-2">
                 如有異常之紀錄，請點選『申請處理』進行填寫、審核。
               </CardDescription>
             </div>
-            <Button asChild size="default" className="ml-auto gap-1">
-              <Link href="#">
-                <Plus className="h-5 w-5" />
-                新增假單
-              </Link>
-            </Button>
+            <div className="">
+              <AddNewFormButton userId={userId} />
+            </div>
           </CardHeader>
           <CardContent className="text-center">
             <Table>
@@ -74,22 +131,67 @@ const UserRecordsList = () => {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                <TableRow>
-                  <TableCell>2023-06-23</TableCell>
-                  <TableCell className="hidden md:table-cell">
-                    10:42:29
-                  </TableCell>
-                  <TableCell className="hidden md:table-cell">
-                    19:20:29
-                  </TableCell>
-                  <TableCell>
-                    <Badge variant="destructive">遲到</Badge>
-                    <Badge variant="destructive">早退</Badge>
-                  </TableCell>
-                  <TableCell>
-                    <Button variant="secondary">申請處理</Button>
-                  </TableCell>
-                </TableRow>
+                {recordData.map((record) => (
+                  <TableRow key={record.id}>
+                    <TableCell>{record.id}</TableCell>
+                    <TableCell className="hidden md:table-cell">
+                      {record.clockInTime || "未打卡"}
+                    </TableCell>
+                    <TableCell className="hidden md:table-cell">
+                      {record.clockOutTime || "未打卡"}
+                    </TableCell>
+                    <TableCell>
+                      {getStatus(record).map((status, index) => {
+                        if (status === "遲到" || status === "早退") {
+                          return (
+                            <Badge
+                              key={index}
+                              variant="destructive"
+                              className="mr-1"
+                            >
+                              {status}
+                            </Badge>
+                          );
+                        } else if (status === "加班") {
+                          return (
+                            <Badge
+                              key={index}
+                              variant="secondary"
+                              className="mr-1"
+                            >
+                              {status}
+                            </Badge>
+                          );
+                        } else {
+                          return (
+                            <Badge
+                              key={index}
+                              variant="outline"
+                              className="mr-1"
+                            >
+                              {status}
+                            </Badge>
+                          );
+                        }
+                      })}
+                    </TableCell>
+                    <TableCell>
+                      {record.clockInTime ||
+                      record.clockOutTime ||
+                      record.isLate ||
+                      record.isEarly ||
+                      record.isOver ? (
+                        <Button variant="secondary" size="sm">
+                          申請處理 <ArrowUpRight className="h-5 w-5 m-2" />
+                        </Button>
+                      ) : (
+                        <Button variant="outline" size="sm" disabled>
+                          無異常
+                        </Button>
+                      )}
+                    </TableCell>
+                  </TableRow>
+                ))}
               </TableBody>
             </Table>
           </CardContent>
