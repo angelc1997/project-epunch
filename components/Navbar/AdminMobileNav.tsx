@@ -1,6 +1,12 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { Menu, House, SquareMousePointer } from "lucide-react";
+import {
+  Menu,
+  House,
+  SquareMousePointer,
+  MessageCircleQuestion,
+  Settings,
+} from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 
 type AdminInfo = {
@@ -24,11 +30,27 @@ const AdminMobileNav = ({ adminId }: AdminInfo) => {
             <span>ePunch點點班</span>
           </Link>
           <Link
-            href={`/admin/${adminId}`}
+            href={`/admin/${adminId}/userlist`}
             className="flex items-center gap-2 justify-center hover:text-primary"
           >
             <House className="w-5 h-5" />
-            <span>員工列表</span>
+            <span>員工</span>
+          </Link>
+
+          <Link
+            href={`/admin/${adminId}/questionform`}
+            className="flex items-center gap-2 justify-center hover:text-primary"
+          >
+            <MessageCircleQuestion className="w-5 h-5" />
+            <span>諮詢</span>
+          </Link>
+
+          <Link
+            href={`/admin/${adminId}/adminsetting`}
+            className="flex items-center gap-2 justify-center hover:text-primary"
+          >
+            <Settings className="w-5 h-5" />
+            <span>設定</span>
           </Link>
         </nav>
       </SheetContent>

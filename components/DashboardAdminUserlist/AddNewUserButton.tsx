@@ -28,6 +28,7 @@ import {
 import { useToast } from "@/components/ui/use-toast";
 import { doc, getFirestore, setDoc } from "firebase/firestore";
 import { getErrorToast } from "@/lib/firebaseErrorHandler";
+import { Plus } from "lucide-react";
 
 const auth = getAuth(app);
 const auth2 = getAuth(secondApp);
@@ -140,7 +141,10 @@ const AddNewUserButton = ({ adminId }: Admin) => {
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
-        <Button onClick={() => setIsOpen(true)}>新增員工</Button>
+        <Button onClick={() => setIsOpen(true)}>
+          <Plus className="w-5 h-5 mr-2" />
+          新增員工
+        </Button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>

@@ -2,7 +2,6 @@
 import AdminMobileNav from "@/components/Navbar/AdminMobileNav";
 import UserLoginButton from "@/components/Navbar/UserLoginButton";
 import AdminDesktopNav from "@/components/Navbar/AdminDesktopNav";
-import AdminUserList from "@/components/DashboardAdmin/AdminUserList";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { app } from "@/lib/firebase";
@@ -16,7 +15,7 @@ interface Admin {
   email: string;
 }
 
-export default function Dashboard() {
+const DashboardQuestionForm = () => {
   const router = useRouter();
   const [admin, setAdmin] = useState<Admin | null>(null);
 
@@ -57,8 +56,10 @@ export default function Dashboard() {
 
       {/* 主要內容區塊 */}
       <main className="mt-10 relative">
-        <AdminUserList adminId={admin?.adminId} />
+        <div>我是諮詢</div>
       </main>
     </div>
   );
-}
+};
+
+export default DashboardQuestionForm;

@@ -33,7 +33,7 @@ const LandingAdvantages = () => {
         </CardHeader>
         <CardContent>
           <p className="text-slate-700 text-lg">
-            使用ePunch只需要使用手機、平板、電腦即可完成上下班打卡
+            使用電子表單快速便捷，隨時申請、審核不受地域限制
           </p>
         </CardContent>
       </Card>
@@ -46,7 +46,7 @@ const LandingAdvantages = () => {
         </CardHeader>
         <CardContent>
           <p className="text-slate-700 text-lg">
-            使用ePunch只需要使用手機、平板、電腦即可完成上下班打卡
+            ePunch提供直觀使用界面，輕鬆掌握並管理所有人員
           </p>
         </CardContent>
       </Card>

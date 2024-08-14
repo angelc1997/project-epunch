@@ -84,7 +84,7 @@ const LoginForm = () => {
         if (docSnap.exists()) {
           const adminData = docSnap.data();
           if (adminData.sys === "admin") {
-            router.push(`/admin/${userUid}`);
+            router.push(`/admin/${userUid}/userlist`);
             toast({
               title: "登入成功",
               description: "歡迎回到ePunch點點班平台",

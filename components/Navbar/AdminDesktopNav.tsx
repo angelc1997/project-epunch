@@ -1,5 +1,10 @@
 import Link from "next/link";
-import { House, SquareMousePointer } from "lucide-react";
+import {
+  House,
+  MessageCircleQuestion,
+  Settings,
+  SquareMousePointer,
+} from "lucide-react";
 
 type AdminInfo = {
   adminId: string;
@@ -16,11 +21,27 @@ const AdminDesktopNav = ({ adminId }: AdminInfo) => {
       </Link>
 
       <Link
-        href={`/admin/${adminId}`}
+        href={`/admin/${adminId}/userlist`}
         className="flex items-center gap-2 justify-center hover:text-primary"
       >
         <House className="w-5 h-5" />
-        <span>員工列表</span>
+        <span>員工</span>
+      </Link>
+
+      <Link
+        href={`/admin/${adminId}/questionform`}
+        className="flex items-center gap-2 justify-center hover:text-primary"
+      >
+        <Settings className="w-5 h-5" />
+        <span>諮詢</span>
+      </Link>
+
+      <Link
+        href={`/admin/${adminId}/adminsetting`}
+        className="flex items-center gap-2 justify-center hover:text-primary"
+      >
+        <Settings className="w-5 h-5" />
+        <span>設定</span>
       </Link>
     </nav>
   );
