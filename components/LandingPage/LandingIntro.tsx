@@ -8,7 +8,6 @@ const LandingIntro = () => {
       <div className="absolute left-[-20px] bottom-[-20px] w-[100px] h-[100px] rounded-full linear-circle"></div>
       <div className="hidden lg:block lg:absolute right-[460px] top-[100px] w-[50px] h-[50px] rounded-full linear-circle"></div>
 
-      {/* 介紹 */}
       <div className="flex flex-col lg:flex-row lg:justify-between lg:items-center p-6 lg:p-10">
         <div className="text-center lg:text-left lg:w-1/2">
           <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold">

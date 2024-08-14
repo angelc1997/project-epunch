@@ -111,3 +111,7 @@ input:autofill {
 input:focus {
   background-color: hsl(var(--background)) !important;
 }
+
+html {
+  scroll-behavior: smooth;
+}

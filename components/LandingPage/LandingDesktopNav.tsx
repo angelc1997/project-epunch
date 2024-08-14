@@ -17,7 +17,7 @@ const LandingDesktopNav = () => {
       <nav className="flex justify-between items-center h-full px-4">
         {/* 預約諮詢 */}
         <Link
-          href="/"
+          href="#section-bookingForm"
           className="hidden md:flex items-center gap-2 justify-center px-6 py-2 rounded-full text-lg hover:text-white hover:bg-primary"
         >
           <Headset className="w-5 h-5" />
@@ -25,7 +25,7 @@ const LandingDesktopNav = () => {
         </Link>
 
         <Link
-          href="/"
+          href="#section-bookingForm"
           className="flex items-center justify-center md:hidden hover:rounded-full hover:bg-primary hover:text-white w-12 h-12"
         >
           <Headset className="w-5 h-5" />
