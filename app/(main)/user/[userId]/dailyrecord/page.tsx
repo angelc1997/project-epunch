@@ -8,6 +8,7 @@ import { useEffect, useState } from "react";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { app } from "@/lib/firebase";
 import { useRouter } from "next/navigation";
+import LandingFooter from "@/components/LandingPage/LandingFooter";
 
 const auth = getAuth(app);
 
@@ -59,6 +60,7 @@ const DashboardDailyRecord = () => {
       <main className="mt-10 relative">
         <UserHomePage />
       </main>
+      <LandingFooter />
     </div>
   );
 };

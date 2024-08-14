@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { app } from "@/lib/firebase";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
+import LandingFooter from "@/components/LandingPage/LandingFooter";
 
 const auth = getAuth(app);
 
@@ -58,6 +59,7 @@ const DashboardAdminSetting = () => {
       <main className="mt-10 relative">
         <div>我是設定</div>
       </main>
+      <LandingFooter />
     </div>
   );
 };

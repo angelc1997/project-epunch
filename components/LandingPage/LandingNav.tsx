@@ -1,17 +1,8 @@
 import React from "react";
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
-import { SquareMousePointer, Headset, Menu, LogIn } from "lucide-react";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+import { Headset, LogIn } from "lucide-react";
 
-const LandingDesktopNav = () => {
+const LandingNav = () => {
   return (
     <header className="h-20 px-5 border-slate-200 border-2 mt-5 rounded-full">
       <nav className="flex justify-between items-center h-full px-4">
@@ -59,4 +50,4 @@ const LandingDesktopNav = () => {
   );
 };
 
-export default LandingDesktopNav;
+export default LandingNav;

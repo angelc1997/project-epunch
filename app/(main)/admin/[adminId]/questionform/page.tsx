@@ -6,6 +6,8 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { app } from "@/lib/firebase";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
+import QuestionMainContent from "@/components/DashboardAdminQuestion/QuestionMainContent";
+import LandingFooter from "@/components/LandingPage/LandingFooter";
 
 const auth = getAuth(app);
 
@@ -56,8 +58,9 @@ const DashboardQuestionForm = () => {
 
       {/* 主要內容區塊 */}
       <main className="mt-10 relative">
-        <div>我是諮詢</div>
+        <QuestionMainContent name={admin.companyName} email={admin.email} />
       </main>
+      <LandingFooter />
     </div>
   );
 };

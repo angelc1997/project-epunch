@@ -1,15 +1,5 @@
 import React from "react";
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
-import { SquareMousePointer, Headset, Menu, LogIn } from "lucide-react";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 
 const LandingFooter = () => {
   return (

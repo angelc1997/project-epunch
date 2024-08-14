@@ -43,13 +43,18 @@ const formSchema = z.object({
   }),
 });
 
-const LandingBooking = () => {
+type AdminInfo = {
+  name: string;
+  email: string;
+};
+
+const QuestionMainContent = ({ name, email }: AdminInfo) => {
   const { toast } = useToast();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      name: "",
-      email: "",
+      name: name,
+      email: email,
       phone: "",
       topic: "",
       message: "",
@@ -60,13 +65,19 @@ const LandingBooking = () => {
     try {
       console.log(data);
       toast({
-        title: "預約成功",
+        title: "提交表單成功",
         description: "我們會盡快與您聯繫。",
       });
-      form.reset();
+      form.reset({
+        name: name,
+        email: email,
+        phone: "",
+        topic: "",
+        message: "",
+      });
     } catch (error) {
       toast({
-        title: "預約失敗",
+        title: "提交表單失敗",
         description: "請稍後再試。",
         variant: "destructive",
       });
@@ -80,12 +91,10 @@ const LandingBooking = () => {
     >
       <div className="absolute right-[-20px] top-[-20px] w-[80px] h-[80px] rounded-full linear-circle"></div>
       <div className="absolute right-[300px] md:right-[500px] lg:right-[700px] top-[50px] w-[40px] h-[40px] rounded-full linear-circle -z-10"></div>
-      <h2 className="text-3xl font-bold mb-6 text-center mt-10">預約諮詢</h2>
+      <h2 className="text-3xl font-bold mb-6 text-center mt-10">客服諮詢</h2>
 
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 p-10">
-          {/* 姓名+電話 */}
-
           <FormField
             control={form.control}
             name="name"
@@ -102,21 +111,6 @@ const LandingBooking = () => {
               </FormItem>
             )}
           />
-          <FormField
-            control={form.control}
-            name="phone"
-            render={({ field }) => (
-              <FormItem>
-                <div className="flex justify-between">
-                  <FormLabel>電話</FormLabel>
-                  <FormMessage />
-                </div>
-                <FormControl>
-                  <Input placeholder="請輸入您的電話號碼" {...field} />
-                </FormControl>
-              </FormItem>
-            )}
-          />
 
           <FormField
             control={form.control}
@@ -129,6 +123,22 @@ const LandingBooking = () => {
                 </div>
                 <FormControl>
                   <Input placeholder="請輸入您的電子郵件" {...field} />
+                </FormControl>
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="phone"
+            render={({ field }) => (
+              <FormItem>
+                <div className="flex justify-between">
+                  <FormLabel>電話</FormLabel>
+                  <FormMessage />
+                </div>
+                <FormControl>
+                  <Input placeholder="請輸入您的電話號碼" {...field} />
                 </FormControl>
               </FormItem>
             )}
@@ -188,4 +198,4 @@ const LandingBooking = () => {
   );
 };
 
-export default LandingBooking;
+export default QuestionMainContent;
