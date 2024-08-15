@@ -34,10 +34,9 @@ import { useToast } from "@/components/ui/use-toast";
 import { app } from "@/lib/firebase";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { useRouter } from "next/navigation";
-import { FirebaseError } from "firebase/app";
 import { getErrorToast } from "@/lib/firebaseErrorHandler";
 import Link from "next/link";
-import { ChevronLeft, CircleChevronLeft } from "lucide-react";
+import { CircleChevronLeft } from "lucide-react";
 
 const auth = getAuth(app);
 const db = getFirestore(app);
@@ -216,7 +215,7 @@ const LoginForm = () => {
           <span>返回首頁</span>
         </Link>
         <Link
-          href="/forgot-password"
+          href="/forgot"
           className="flex items-center gap-2 justify-center text-cyan-600 hover:text-cyan-800 hover:underline transition-colors"
         >
           <span>忘記密碼？</span>

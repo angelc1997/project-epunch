@@ -158,7 +158,7 @@ const AddNewUserButton = ({ adminId }: Admin) => {
             <Input
               name="employeeId"
               className="mt-2"
-              placeholder="ex:A001"
+              placeholder="如:A001"
               value={newUser.employeeId}
               onChange={(e) => handleChange("employeeId", e.target.value)}
             />
@@ -168,7 +168,7 @@ const AddNewUserButton = ({ adminId }: Admin) => {
             <Input
               name="name"
               className="mt-2"
-              placeholder="ex:王小明"
+              placeholder="如:王小明"
               value={newUser.name}
               onChange={(e) => handleChange("name", e.target.value)}
             />
@@ -181,7 +181,7 @@ const AddNewUserButton = ({ adminId }: Admin) => {
             <Input
               name="department"
               className="mt-2"
-              placeholder="ex:人力資源處"
+              placeholder="如:資訊部"
               value={newUser.department}
               onChange={(e) => handleChange("department", e.target.value)}
             />
@@ -191,7 +191,7 @@ const AddNewUserButton = ({ adminId }: Admin) => {
             <Input
               name="position"
               className="mt-2"
-              placeholder="ex:工程師"
+              placeholder="如:工程師"
               value={newUser.position}
               onChange={(e) => handleChange("position", e.target.value)}
             />
@@ -203,7 +203,7 @@ const AddNewUserButton = ({ adminId }: Admin) => {
           <Input
             name="email"
             className="mt-2"
-            placeholder="ex: employee@example.com"
+            placeholder="如: employee@example.com"
             value={newUser.email}
             onChange={(e) => handleChange("email", e.target.value)}
           />
@@ -226,7 +226,7 @@ const AddNewUserButton = ({ adminId }: Admin) => {
           <Label>分機</Label>
           <Input
             className="mt-2"
-            placeholder="分機"
+            placeholder="如: 1234"
             name="tele"
             value={newUser.tele}
             onChange={(e) => handleChange("tele", e.target.value)}
