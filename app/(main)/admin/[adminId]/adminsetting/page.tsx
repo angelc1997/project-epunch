@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation";
 import { app } from "@/lib/firebase";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import LandingFooter from "@/components/LandingPage/LandingFooter";
+import SettingCard from "@/components/DashboardAdminSetting/SettingCard";
 
 const auth = getAuth(app);
 
@@ -57,7 +58,11 @@ const DashboardAdminSetting = () => {
 
       {/* 主要內容區塊 */}
       <main className="mt-10 relative">
-        <div>我是設定</div>
+        <SettingCard
+          adminId={admin.adminId}
+          name={admin.companyName}
+          email={admin.email}
+        />
       </main>
       <LandingFooter />
     </div>

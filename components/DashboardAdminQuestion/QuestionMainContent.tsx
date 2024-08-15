@@ -189,7 +189,7 @@ const QuestionMainContent = ({ name, email }: AdminInfo) => {
               </FormItem>
             )}
           />
-          <Button type="submit" className="w-full">
+          <Button type="submit" className="w-full" size="lg">
             提交諮詢
           </Button>
         </form>

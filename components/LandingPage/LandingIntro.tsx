@@ -11,7 +11,7 @@ const LandingIntro = () => {
       <div className="flex flex-col lg:flex-row lg:justify-between lg:items-center p-6 lg:p-10">
         <div className="text-center lg:text-left lg:w-1/2">
           <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold">
-            <span className="text-cyan-500">ePunch點點班</span>線上打卡系統
+            <span className="text-cyan-500">ePunch點點班</span>打卡系統
           </h1>
           <h3 className="text-xl sm:text-2xl md:text-3xl font-normal mt-5">
             快速簡單好上手、輕鬆有效好幫手

@@ -15,6 +15,7 @@ import {
   Card,
   CardContent,
   CardDescription,
+  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
@@ -35,6 +36,8 @@ import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { useRouter } from "next/navigation";
 import { FirebaseError } from "firebase/app";
 import { getErrorToast } from "@/lib/firebaseErrorHandler";
+import Link from "next/link";
+import { ChevronLeft, CircleChevronLeft } from "lucide-react";
 
 const auth = getAuth(app);
 const db = getFirestore(app);
@@ -204,6 +207,21 @@ const LoginForm = () => {
           </form>
         </Form>
       </CardContent>
+      <CardFooter className="flex justify-between">
+        <Link
+          href="/"
+          className="flex items-center gap-2 justify-center text-cyan-600 hover:text-cyan-800 hover:underline transition-colors"
+        >
+          <CircleChevronLeft className="w-5 h-5" />
+          <span>返回首頁</span>
+        </Link>
+        <Link
+          href="/forgot-password"
+          className="flex items-center gap-2 justify-center text-cyan-600 hover:text-cyan-800 hover:underline transition-colors"
+        >
+          <span>忘記密碼？</span>
+        </Link>
+      </CardFooter>
     </Card>
   );
 };
