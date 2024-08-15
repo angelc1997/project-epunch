@@ -94,7 +94,7 @@ const RegisterForm = () => {
         title: "您已註冊成功",
         description: "歡迎使用ePunch點點班平台",
       });
-      router.push(`/admin/${admin.uid}`);
+      router.push(`/admin/${admin.uid}/userlist`);
     } catch (error: FirebaseError | any) {
       switch (error.code) {
         case "auth/email-already-in-use":
