@@ -51,7 +51,6 @@ const ModifyUserInfo: React.FC<ModifyUserInfoProps> = ({ adminId, userId }) => {
     name: "",
     department: "",
     position: "",
-    email: "",
     tele: "",
     status: "",
     role: "",
@@ -155,16 +154,17 @@ const ModifyUserInfo: React.FC<ModifyUserInfoProps> = ({ adminId, userId }) => {
           </div>
         </div>
 
+        <div>
+          <Label>部門</Label>
+          <Input
+            name="department"
+            className="mt-2"
+            value={userData.department}
+            onChange={(e) => handleChange("department", e.target.value)}
+          />
+        </div>
+
         <div className="flex gap-2">
-          <div>
-            <Label>部門</Label>
-            <Input
-              name="department"
-              className="mt-2"
-              value={userData.department}
-              onChange={(e) => handleChange("department", e.target.value)}
-            />
-          </div>
           <div>
             <Label>職位</Label>
             <Input
@@ -174,26 +174,16 @@ const ModifyUserInfo: React.FC<ModifyUserInfoProps> = ({ adminId, userId }) => {
               onChange={(e) => handleChange("position", e.target.value)}
             />
           </div>
-        </div>
 
-        <div>
-          <Label>信箱</Label>
-          <Input
-            name="email"
-            className="mt-2"
-            value={userData.email}
-            onChange={(e) => handleChange("email", e.target.value)}
-          />
-        </div>
-
-        <div>
-          <Label>分機</Label>
-          <Input
-            className="mt-2"
-            name="tele"
-            value={userData.tele}
-            onChange={(e) => handleChange("tele", e.target.value)}
-          />
+          <div>
+            <Label>分機</Label>
+            <Input
+              className="mt-2"
+              name="tele"
+              value={userData.tele}
+              onChange={(e) => handleChange("tele", e.target.value)}
+            />
+          </div>
         </div>
 
         <div className="flex gap-2">
