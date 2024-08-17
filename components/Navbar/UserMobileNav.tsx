@@ -25,7 +25,7 @@ const UserMobileNav = ({ userId }: UserInfo) => {
           </Link>
           <Link
             href={`/user/${userId}/dailyrecord`}
-            className="flex items-center py-4 px-4 gap-1 rounded hover:bg-primary hover:text-white"
+            className="flex items-center gap-2 justify-center hover:text-primary"
           >
             <House className="w-5 h-5" />
             <span>打卡</span>
@@ -33,7 +33,7 @@ const UserMobileNav = ({ userId }: UserInfo) => {
 
           <Link
             href={`/user/${userId}/recordlist`}
-            className="flex items-center py-4 px-4 gap-1 rounded hover:bg-primary hover:text-white"
+            className="flex items-center gap-2 justify-center hover:text-primary"
           >
             <NotepadText className="w-5 h-5" />
             <span>紀錄</span>

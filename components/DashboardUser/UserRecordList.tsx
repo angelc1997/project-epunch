@@ -100,7 +100,7 @@ const UserRecordsList = ({ userId }: UserInfo) => {
               className="flex mx-auto"
             />
           </CardHeader>
-          <CardContent>李王</CardContent>
+          <CardContent></CardContent>
         </Card>
 
         <Card className="lg:col-span-2">
