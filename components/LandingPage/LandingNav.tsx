@@ -1,5 +1,6 @@
 import React from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { Headset, LogIn } from "lucide-react";
 
 const LandingNav = () => {
@@ -28,7 +29,15 @@ const LandingNav = () => {
           className="flex items-center gap-2 text-lg font-bold hover:text-primary"
         >
           {/* <SquareMousePointer className="h-5 w-6" /> */}
-          <span>ePunch點點班</span>
+          <span className="flex items-center gap-2">
+            <Image
+              src="/assets/LOGO.png"
+              alt="ePunch-logo"
+              width={30}
+              height={30}
+            />
+            ePunch點點班
+          </span>
         </Link>
 
         {/* 登入註冊 */}

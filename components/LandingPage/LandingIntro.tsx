@@ -1,5 +1,4 @@
 import { CirclePlay } from "lucide-react";
-
 import Link from "next/link";
 
 const LandingIntro = () => {
@@ -14,7 +13,7 @@ const LandingIntro = () => {
             <span className="text-cyan-500">ePunch點點班</span>打卡系統
           </h1>
           <h3 className="text-xl sm:text-2xl md:text-3xl font-normal mt-5">
-            快速簡單好上手、輕鬆有效好幫手
+            快速點點上下班，隨時打卡沒負擔。
           </h3>
 
           <div className="flex justify-center lg:justify-start mt-8">
