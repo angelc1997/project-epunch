@@ -1,5 +1,4 @@
 import { FirebaseError } from "firebase/app";
-import { useToast } from "@/components/ui/use-toast";
 
 interface ErrorToastValue {
   title: string;
