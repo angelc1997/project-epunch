@@ -7,7 +7,7 @@ import { useRouter } from "next/navigation";
 import { app } from "@/lib/firebase";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import LandingFooter from "@/components/LandingPage/LandingFooter";
-import SettingCard from "@/components/DashboardAdminSetting/SettingCard";
+import SettingCard from "@/components/DashboardAdmin/AdminSetting/SettingCard";
 
 const auth = getAuth(app);
 
