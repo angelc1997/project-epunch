@@ -3,7 +3,7 @@
 import UserMobileNav from "@/components/Navbar/UserMobileNav";
 import UserLoginButton from "@/components/Navbar/UserLoginButton";
 import UserDesktopNav from "@/components/Navbar/UserDesktopNav";
-import UserHomePage from "@/components/DashboardUser/UserHomePage";
+import UserHomePage from "@/components/DashboardUser/UserDailyRecord/UserHomePage";
 import { useEffect, useState } from "react";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { app } from "@/lib/firebase";
