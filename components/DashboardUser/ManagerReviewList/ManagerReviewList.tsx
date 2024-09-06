@@ -144,7 +144,7 @@ const ManagerReviewList = ({ userId }: ManagerInfo) => {
   };
 
   const handleStatusChange = (status: string) => {
-    status;
+    setCurrentStatus(status);
   };
 
   const handlePageChange = (page: number) => {
