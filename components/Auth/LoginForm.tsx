@@ -15,6 +15,7 @@ import {
   Card,
   CardContent,
   CardDescription,
+  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
@@ -33,8 +34,9 @@ import { useToast } from "@/components/ui/use-toast";
 import { app } from "@/lib/firebase";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { useRouter } from "next/navigation";
-import { FirebaseError } from "firebase/app";
 import { getErrorToast } from "@/lib/firebaseErrorHandler";
+import Link from "next/link";
+import { CircleChevronLeft } from "lucide-react";
 
 const auth = getAuth(app);
 const db = getFirestore(app);
@@ -78,15 +80,15 @@ const LoginForm = () => {
       if (user) {
         const userUid = user.uid;
         const docRef = doc(db, "admins", userUid);
-        console.log("docRef", docRef);
+        // console.log("docRef", docRef);
         const docSnap = await getDoc(docRef);
 
         if (docSnap.exists()) {
           const adminData = docSnap.data();
           if (adminData.sys === "admin") {
-            router.push(`/admin/${userUid}`);
+            router.push(`/admin/${userUid}/userlist`);
             toast({
-              title: "登入成功",
+              title: `${adminData.companyName} 登入成功`,
               description: "歡迎回到ePunch點點班平台",
             });
           } else {
@@ -102,7 +104,7 @@ const LoginForm = () => {
           // 瀏覽每一個doc
           for (const admin of adminsSnapshot.docs) {
             const userQuery = query(
-              collection(db, "admins", admin.id, "users"),
+              collection(db, "admins", admin.id, "allUsers"),
               where("email", "==", data.email)
             );
             const userSnapshot = await getDocs(userQuery);
@@ -147,64 +149,94 @@ const LoginForm = () => {
   };
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>登入系統</CardTitle>
-        <CardDescription>請先註冊管理員，並添加資料以登入系統</CardDescription>
-      </CardHeader>
-      <CardContent>
-        <Form {...form}>
-          <form
-            onSubmit={form.handleSubmit(handleSubmit)}
-            className="space-y-6"
+    <>
+      <Card>
+        <CardHeader>
+          <CardTitle>登入系統</CardTitle>
+          <CardDescription>
+            請先註冊管理員，並添加資料以登入系統
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <Form {...form}>
+            <form
+              onSubmit={form.handleSubmit(handleSubmit)}
+              className="space-y-6"
+            >
+              <FormField
+                control={form.control}
+                name="email"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="flex justify-between items-center text-base font-bold text-zinc-500">
+                      信箱 <FormMessage className="text-base" />
+                    </FormLabel>
+                    <FormControl>
+                      <Input
+                        className="bg-slate-100 border-0 text-base"
+                        placeholder="請輸入信箱"
+                        {...field}
+                        type="email"
+                        autoComplete="email"
+                      />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="password"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="flex justify-between items-center text-base font-bold text-zinc-500">
+                      密碼 <FormMessage className="text-base" />
+                    </FormLabel>
+                    <FormControl>
+                      <Input
+                        type="password"
+                        className="bg-slate-100 border-0 text-base"
+                        placeholder="請輸入密碼"
+                        autoComplete="current-password"
+                        {...field}
+                      />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+
+              <Button className="w-full text-base">登入</Button>
+            </form>
+          </Form>
+        </CardContent>
+        <CardFooter className="flex justify-between">
+          <Link
+            href="/"
+            className="flex items-center gap-2 justify-center text-cyan-600 hover:text-cyan-800 hover:underline transition-colors"
           >
-            <FormField
-              control={form.control}
-              name="email"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="flex justify-between items-center text-base font-bold text-zinc-500">
-                    信箱 <FormMessage className="text-base" />
-                  </FormLabel>
-                  <FormControl>
-                    <Input
-                      className="bg-slate-100 border-0 text-base"
-                      placeholder="請輸入信箱"
-                      {...field}
-                      type="email"
-                      autoComplete="email"
-                    />
-                  </FormControl>
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name="password"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="flex justify-between items-center text-base font-bold text-zinc-500">
-                    密碼 <FormMessage className="text-base" />
-                  </FormLabel>
-                  <FormControl>
-                    <Input
-                      type="password"
-                      className="bg-slate-100 border-0 text-base"
-                      placeholder="請輸入密碼"
-                      autoComplete="current-password"
-                      {...field}
-                    />
-                  </FormControl>
-                </FormItem>
-              )}
-            />
-
-            <Button className="w-full text-base">登入</Button>
-          </form>
-        </Form>
-      </CardContent>
-    </Card>
+            <CircleChevronLeft className="w-5 h-5" />
+            <span>返回首頁</span>
+          </Link>
+          <Link
+            href="/forgot"
+            className="flex items-center gap-2 justify-center text-cyan-600 hover:text-cyan-800 hover:underline transition-colors"
+          >
+            <span>忘記密碼？</span>
+          </Link>
+        </CardFooter>
+      </Card>
+      <Card className="mt-4">
+        <CardHeader>
+          <CardTitle className="text-lg font-semibold text-muted-foreground">
+            測試帳號
+          </CardTitle>
+          <CardDescription>管理員帳號：123@gmail.com</CardDescription>
+          <CardDescription>員工帳號：1234@gmail.com</CardDescription>
+          <CardDescription>主管帳號：12345@gmail.com</CardDescription>
+          <CardDescription>通用密碼：123456</CardDescription>
+        </CardHeader>
+      </Card>
+    </>
   );
 };
 

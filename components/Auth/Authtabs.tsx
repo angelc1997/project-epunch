@@ -5,16 +5,18 @@ import RegisterForm from "./RegisterForm";
 const AuthTabs = () => {
   return (
     <Tabs defaultValue="login">
-      <TabsList className="grid w-full grid-cols-2">
+      <TabsList className="grid w-full grid-cols-2 rounded-full">
         <TabsTrigger value="login">登入</TabsTrigger>
         <TabsTrigger value="register">註冊</TabsTrigger>
       </TabsList>
-      <TabsContent value="login">
-        <LoginForm />
-      </TabsContent>
-      <TabsContent value="register">
-        <RegisterForm />
-      </TabsContent>
+      <div className="mt-5">
+        <TabsContent value="login">
+          <LoginForm />
+        </TabsContent>
+        <TabsContent value="register">
+          <RegisterForm />
+        </TabsContent>
+      </div>
     </Tabs>
   );
 };

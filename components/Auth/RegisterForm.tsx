@@ -88,13 +88,17 @@ const RegisterForm = () => {
         companyName: data.companyName,
         email: data.adminEmail,
         sys: "admin",
+        location: false,
+        latitude: null,
+        longitude: null,
+        range: null,
       });
 
       toast({
-        title: "您已註冊成功",
+        title: `${data.companyName} 已註冊成功`,
         description: "歡迎使用ePunch點點班平台",
       });
-      router.push(`/admin/${admin.uid}`);
+      router.push(`/admin/${admin.uid}/userlist`);
     } catch (error: FirebaseError | any) {
       switch (error.code) {
         case "auth/email-already-in-use":
