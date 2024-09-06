@@ -2,7 +2,7 @@
 import AdminMobileNav from "@/components/Navbar/AdminMobileNav";
 import UserLoginButton from "@/components/Navbar/UserLoginButton";
 import AdminDesktopNav from "@/components/Navbar/AdminDesktopNav";
-import AdminUserList from "@/components/DashboardAdminUserlist/AdminUserList";
+import AdminUserList from "@/components/DashboardAdmin/AdminUserList/AdminUserList";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { app } from "@/lib/firebase";
