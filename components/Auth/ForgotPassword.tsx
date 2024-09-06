@@ -63,7 +63,7 @@ const ForgotPassword = () => {
         description: "請查看您的信箱並重設密碼",
       });
     } catch (error) {
-      console.error(error);
+      // console.error(error);
       toast({
         title: "發送重設郵件失敗",
         description: "請確認您的信箱是否正確",
