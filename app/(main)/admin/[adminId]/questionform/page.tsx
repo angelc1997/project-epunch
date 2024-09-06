@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { app } from "@/lib/firebase";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
-import QuestionMainContent from "@/components/DashboardAdminQuestion/QuestionMainContent";
+import QuestionMainContent from "@/components/DashboardAdmin/AdminQuestion/QuestionMainContent";
 import LandingFooter from "@/components/LandingPage/LandingFooter";
 
 const auth = getAuth(app);
