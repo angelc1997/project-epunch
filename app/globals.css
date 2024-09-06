@@ -10,7 +10,7 @@
     --card-foreground: 222.2 84% 4.9%;
     --popover: 0 0% 100%;
     --popover-foreground: 222.2 84% 4.9%;
-    --primary: 188 78% 41%; /* Cyan-600 */
+    --primary: 188 78% 41%;
     --primary-foreground: 0 0% 100%;
     --secondary: 210 40% 96.1%;
     --secondary-foreground: 222.2 47.4% 11.2%;
@@ -38,7 +38,7 @@
     --card-foreground: 210 40% 98%;
     --popover: 222.2 84% 4.9%;
     --popover-foreground: 210 40% 98%;
-    --primary: 186 78% 41%; /* Cyan-600 */
+    --primary: 186 78% 41%;
     --primary-foreground: 0 0% 100%;
     --secondary: 217.2 32.6% 17.5%;
     --secondary-foreground: 210 40% 98%;
@@ -68,7 +68,7 @@
   }
 }
 
-/* HTML: <div class="loader"></div> */
+/* 載入狀態：<div class="loader"></div> */
 .loader {
   width: 50px;
   padding: 8px;
@@ -89,10 +89,10 @@
 }
 
 .linear-circle {
-  background-image: linear-gradient(to top, #96fbc4 0%, #f9f586 100%);
+  background-image: linear-gradient(to top, #44ffe0 0%, #a5fecb 100%);
 }
 
-/* 針對 WebKit 瀏覽器（Chrome, Safari, newer versions of Edge） */
+/* 針對 Chrome, Safari */
 input:-webkit-autofill,
 input:-webkit-autofill:hover,
 input:-webkit-autofill:focus {
@@ -107,7 +107,7 @@ input:autofill {
   color: hsl(var(--foreground)) !important;
 }
 
-/* 確保聚焦時的樣式正確 */
+/* 修改input樣式 */
 input:focus {
   background-color: hsl(var(--background)) !important;
 }
