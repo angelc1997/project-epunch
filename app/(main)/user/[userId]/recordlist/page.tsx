@@ -2,7 +2,7 @@
 import UserMobileNav from "@/components/Navbar/UserMobileNav";
 import UserLoginButton from "@/components/Navbar/UserLoginButton";
 import UserDesktopNav from "@/components/Navbar/UserDesktopNav";
-import UserRecordList from "@/components/DashboardUser/UserRecordList";
+import UserRecordList from "@/components/DashboardUser/UserRecordList/UserRecordList";
 import { useEffect, useState } from "react";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { app } from "@/lib/firebase";
@@ -30,7 +30,6 @@ const DashboardRecordList = () => {
         const userId = user.uid;
         const userName = user.displayName;
         const email = user.email;
-        console.log("user", userId, userName, email);
         setUser({ userId, userName, email });
       }
     });
@@ -51,7 +50,7 @@ const DashboardRecordList = () => {
         <UserDesktopNav userId={user.userId} />
         {/* 導航列手機版 */}
         <UserMobileNav userId={user.userId} />
-        {/* 會員資料+登出按鈕 */}
+        {/* 登出按鈕 */}
         <UserLoginButton name={user.userName} email={user.email} />
       </header>
 
