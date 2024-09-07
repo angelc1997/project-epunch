@@ -9,8 +9,10 @@ import { app } from "@/lib/firebase";
 import { useRouter } from "next/navigation";
 import LandingFooter from "@/components/LandingPage/LandingFooter";
 import UserLeaveList from "@/components/DashboardUser/UserLeaveRecord/UserLeaveList";
+import { doc, getDoc, getFirestore } from "firebase/firestore";
 
 const auth = getAuth(app);
+const db = getFirestore(app);
 
 interface User {
   userId: string;
@@ -21,21 +23,45 @@ interface User {
 const DashboardLeaveRecord = () => {
   const router = useRouter();
   const [user, setUser] = useState<User | null>(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      if (!user || !user.displayName || !user.email) {
+    const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
+      if (!firebaseUser || !firebaseUser.email) {
         setUser(null);
+        setLoading(false);
         router.push("/login");
       } else {
-        const userId = user.uid;
-        const userName = user.displayName;
-        const email = user.email;
-        setUser({ userId, userName, email });
+        try {
+          const userDoc = await getDoc(doc(db, "users", firebaseUser.uid));
+          if (userDoc.exists()) {
+            const userData = userDoc.data();
+            setUser({
+              userId: firebaseUser.uid,
+              userName: userData.name || "未知用戶",
+              email: firebaseUser.email,
+            });
+          } else {
+            console.error("找不到使用者");
+            setUser(null);
+          }
+        } catch (error) {
+          console.error("連接資料庫失敗:", error);
+          setUser(null);
+        }
+        setLoading(false);
       }
     });
     return () => unsubscribe();
   }, [router]);
+
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <div className="loader"></div>
+      </div>
+    );
+  }
 
   if (!user) {
     return (
@@ -44,6 +70,7 @@ const DashboardLeaveRecord = () => {
       </div>
     );
   }
+
   return (
     <div className="max-w-[1200px] min-h-screen mx-auto">
       <header className="bg-white flex justify-between items-center h-20 px-5">
