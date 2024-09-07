@@ -21,11 +21,20 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { SquarePen } from "lucide-react";
 import { app } from "@/lib/firebase";
-import { doc, getDoc, getFirestore, updateDoc } from "firebase/firestore";
+import {
+  doc,
+  getDoc,
+  getFirestore,
+  updateDoc,
+  setDoc,
+  deleteDoc,
+} from "firebase/firestore";
+import { getAuth, updateProfile } from "firebase/auth";
 import { useToast } from "../../ui/use-toast";
 import { getErrorToast } from "@/lib/firebaseErrorHandler";
 
 const db = getFirestore(app);
+const auth = getAuth(app);
 
 const statusOptions = [
   { value: "active", label: "在職" },
@@ -55,6 +64,7 @@ const ModifyUserInfo = ({ adminId, userId }: ModifyUserInfoProps) => {
     status: "",
     role: "",
   });
+  const [originalRole, setOriginalRole] = useState("");
 
   useEffect(() => {
     const getUserData = async () => {
@@ -65,7 +75,9 @@ const ModifyUserInfo = ({ adminId, userId }: ModifyUserInfoProps) => {
           doc(db, "admins", adminId, "allUsers", userId)
         );
         if (userDoc.exists()) {
-          setUserData(userDoc.data() as typeof userData);
+          const data = userDoc.data() as typeof userData;
+          setUserData(data);
+          setOriginalRole(data.role);
         }
       } catch (error) {
         const errorToast = getErrorToast(error);
@@ -91,13 +103,27 @@ const ModifyUserInfo = ({ adminId, userId }: ModifyUserInfoProps) => {
         updatedAt: new Date().toISOString(),
       };
 
+      // 更新admins底下的allUsers
       await updateDoc(
         doc(db, "admins", adminId, "allUsers", userId),
         updateUserData
       );
+
+      // 更新users底下
       await updateDoc(doc(db, "users", userId), updateUserData);
 
-      if (userData.role === "manager") {
+      // 處理manager角色的變更
+      if (userData.role !== originalRole) {
+        if (userData.role === "manager") {
+          await setDoc(
+            doc(db, "admins", adminId, "managers", userId),
+            updateUserData
+          );
+        } else {
+          await deleteDoc(doc(db, "admins", adminId, "managers", userId));
+        }
+      } else if (userData.role === "manager") {
+        // 如果角色沒變，但原本就是manager，更新managers集合
         await updateDoc(
           doc(db, "admins", adminId, "managers", userId),
           updateUserData
@@ -119,7 +145,6 @@ const ModifyUserInfo = ({ adminId, userId }: ModifyUserInfoProps) => {
       });
     }
   };
-
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
