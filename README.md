@@ -1,4 +1,4 @@
-# [ePunch 點點班 | 線上打卡](https://project-epunch-fodrlfxf6-angelc1997s-projects.vercel.app/)
+# [ePunch 點點班 | 線上打卡](https://project-epunch.vercel.app/)
 
 ePunch 點點班提供手機、平板、電腦等裝置線上上下班打卡機制。
 
