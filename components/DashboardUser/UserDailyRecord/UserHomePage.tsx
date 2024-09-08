@@ -6,7 +6,13 @@ import { Button } from "@/components/ui/button";
 import { AlarmClock, CalendarDays, ClockArrowDown, MapPin } from "lucide-react";
 import { app } from "@/lib/firebase";
 import { getAuth } from "firebase/auth";
-import { doc, getDoc, getFirestore, setDoc } from "firebase/firestore";
+import {
+  doc,
+  getDoc,
+  getFirestore,
+  setDoc,
+  updateDoc,
+} from "firebase/firestore";
 import { useToast } from "@/components/ui/use-toast";
 
 const auth = getAuth(app);
@@ -155,7 +161,6 @@ const UserHomePage = () => {
       .split("T")[0];
 
     try {
-      // Check today's records
       const todayRecordRef = doc(db, `users/${user.uid}/clockRecords`, today);
       const todayRecordSnap = await getDoc(todayRecordRef);
 
@@ -166,7 +171,6 @@ const UserHomePage = () => {
         setClockOutTime(lastRecord.clockOut || "尚未打卡");
         setIsClockIn(!lastRecord.clockOut);
       } else {
-        // If no records for today, check yesterday's records
         const yesterdayRecordRef = doc(
           db,
           `users/${user.uid}/clockRecords`,
@@ -178,7 +182,6 @@ const UserHomePage = () => {
           const data = yesterdayRecordSnap.data() as DailyRecord;
           const lastRecord = data.records[data.records.length - 1];
           if (lastRecord && !lastRecord.clockOut) {
-            // There's an open clock-in from yesterday
             setClockInTime(lastRecord.clockIn);
             setClockOutTime("尚未打卡");
             setIsClockIn(true);
@@ -210,69 +213,78 @@ const UserHomePage = () => {
     const time = now.toLocaleTimeString("zh-TW");
 
     try {
+      const recordRef = doc(db, `users/${user.uid}/clockRecords`, today);
+      const recordSnap = await getDoc(recordRef);
+
       if (isClockIn) {
-        // Clock-in logic
-        const newRecord: DailyRecord = {
-          date: today,
-          records: [
-            {
-              clockInDate: today,
-              clockOutDate: "",
-              clockIn: time,
-              clockOut: "",
-            },
-          ],
-        };
-        await setDoc(
-          doc(db, `users/${user.uid}/clockRecords`, today),
-          newRecord
-        );
+        if (recordSnap.exists()) {
+          const data = recordSnap.data() as DailyRecord;
+          await updateDoc(recordRef, {
+            records: [
+              ...data.records,
+              {
+                clockInDate: today,
+                clockOutDate: "",
+                clockIn: time,
+                clockOut: "",
+              },
+            ],
+          });
+        } else {
+          const newRecord: DailyRecord = {
+            date: today,
+            records: [
+              {
+                clockInDate: today,
+                clockOutDate: "",
+                clockIn: time,
+                clockOut: "",
+              },
+            ],
+          };
+          await setDoc(recordRef, newRecord);
+        }
       } else {
-        // Clock-out logic
-        const yesterday = new Date(now.getTime() - 86400000)
-          .toISOString()
-          .split("T")[0];
-        const todayRecordRef = doc(db, `users/${user.uid}/clockRecords`, today);
-        const yesterdayRecordRef = doc(
-          db,
-          `users/${user.uid}/clockRecords`,
-          yesterday
-        );
-
-        const todayRecordSnap = await getDoc(todayRecordRef);
-        const yesterdayRecordSnap = await getDoc(yesterdayRecordRef);
-
-        if (todayRecordSnap.exists()) {
-          // Update today's record
-          const data = todayRecordSnap.data() as DailyRecord;
-          const lastRecord = data.records[data.records.length - 1];
+        if (recordSnap.exists()) {
+          const data = recordSnap.data() as DailyRecord;
+          const updatedRecords = [...data.records];
+          const lastRecord = updatedRecords[updatedRecords.length - 1];
           if (!lastRecord.clockOut) {
             lastRecord.clockOut = time;
             lastRecord.clockOutDate = today;
-            await setDoc(todayRecordRef, data);
           } else {
-            // If all records are closed, create a new clock-out record
-            data.records.push({
+            updatedRecords.push({
               clockInDate: "",
               clockOutDate: today,
               clockIn: "",
               clockOut: time,
             });
-            await setDoc(todayRecordRef, data);
           }
-        } else if (yesterdayRecordSnap.exists()) {
-          // Update yesterday's record for cross-day clock-out
-          const data = yesterdayRecordSnap.data() as DailyRecord;
-          const lastRecord = data.records[data.records.length - 1];
-          if (!lastRecord.clockOut) {
-            lastRecord.clockOut = time;
-            lastRecord.clockOutDate = today;
-            await setDoc(yesterdayRecordRef, data);
+          await updateDoc(recordRef, { records: updatedRecords });
+        } else {
+          const yesterday = new Date(now.getTime() - 86400000)
+            .toISOString()
+            .split("T")[0];
+          const yesterdayRecordRef = doc(
+            db,
+            `users/${user.uid}/clockRecords`,
+            yesterday
+          );
+          const yesterdayRecordSnap = await getDoc(yesterdayRecordRef);
+
+          if (yesterdayRecordSnap.exists()) {
+            const data = yesterdayRecordSnap.data() as DailyRecord;
+            const updatedRecords = [...data.records];
+            const lastRecord = updatedRecords[updatedRecords.length - 1];
+            if (!lastRecord.clockOut) {
+              lastRecord.clockOut = time;
+              lastRecord.clockOutDate = today;
+              await updateDoc(yesterdayRecordRef, { records: updatedRecords });
+            }
           }
         }
       }
 
-      // Update state
       await fetchLatestClockRecord();
 
       toast({
@@ -288,7 +300,6 @@ const UserHomePage = () => {
       });
     }
   };
-
   const handleClockIn = () => handleClock(true);
   const handleClockOut = () => handleClock(false);
 
